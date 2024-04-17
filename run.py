@@ -7,17 +7,30 @@ def lire_mots():
 def creer_tableau_occurence(mots):
     tableau_occurence = {}
     for mot in mots:
-        prev_prev = None
-        prev = None
-        for char in mot:
-            if prev_prev not in tableau_occurence:
-                tableau_occurence[prev_prev] = {}
-            if prev not in tableau_occurence[prev_prev]:
-                tableau_occurence[prev_prev][prev] = {}
-            if char not in tableau_occurence[prev_prev][prev]:
-                tableau_occurence[prev_prev][prev][char] = 1
-            else:
-                tableau_occurence[prev_prev][prev][char] += 1
-            prev_prev = prev
-            prev = char
+        mot = "#" + mot  # Ajoute un symbole de début de mot
+        for i in range(len(mot)):
+            # Obtenir le préfixe jusqu'à 3 caractères avant la lettre courante
+            for j in range(3):
+                if i-j < 0:
+                    break
+                prefix = mot[i-j:i]
+                char = mot[i]
+                if prefix not in tableau_occurence:
+                    tableau_occurence[prefix] = {}
+                if char not in tableau_occurence[prefix]:
+                    tableau_occurence[prefix][char] = 0
+                tableau_occurence[prefix][char] += 1
+
     return tableau_occurence
+
+# Exemple d'utilisation
+mots = lire_mots()
+tableau_occurence = creer_tableau_occurence(mots)
+
+# Convertir le tableau d'occurrence en JSON
+import json
+json_statistiques = json.dumps(tableau_occurence, ensure_ascii=False, indent=4)
+print(json_statistiques)
+
+with open('statistiques.json', 'w', encoding='utf-8') as f:
+    f.write(json_statistiques)
