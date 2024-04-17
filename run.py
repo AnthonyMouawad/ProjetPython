@@ -34,3 +34,41 @@ print(json_statistiques)
 
 with open('statistiques.json', 'w', encoding='utf-8') as f:
     f.write(json_statistiques)
+
+
+import random
+
+def choisir_suivant(dictionnaire):
+    """ Choisir une lettre suivante basée sur les fréquences cumulatives. """
+    total = sum(dictionnaire.values())
+    roue = random.uniform(0, total)
+    cumul = 0
+    for lettre, freq in dictionnaire.items():
+        cumul += freq
+        if roue <= cumul:
+            return lettre
+    return ' '  # Retourne un espace si rien n'est trouvé (ce qui devrait être rare avec des données correctes)
+
+def generer_mot_plausible(tableau_occurence, debut='#', longueur_min=4, longueur_max=8):
+    mot = debut
+    while len(mot) < longueur_max + 1:  # +1 pour le symbole initial
+        prefix = mot[-3:] if len(mot) > 3 else mot[-2:] if len(mot) > 2 else mot[-1]
+        if prefix not in tableau_occurence:
+            break
+        suivant = choisir_suivant(tableau_occurence[prefix])
+        if suivant.isspace():
+            if len(mot) >= longueur_min + 1:  # Vérifie si le mot a une longueur minimale
+                break
+            else:
+                continue
+        mot += suivant
+    return mot[1:]  # Retourne le mot sans le symbole initial
+
+# Génération des mots
+nombre_mots = 100  # Nombre de mots à générer
+mots_generes = [generer_mot_plausible(tableau_occurence) for _ in range(nombre_mots)]
+
+# Écrire les mots dans un fichier
+with open('mots_generes.txt', 'w', encoding='utf-8') as fichier:
+    for mot in mots_generes:
+        fichier.write(mot + '\n')
