@@ -1,5 +1,6 @@
 import json
 import random
+import os
 
 #Ouverture du fichier texte contenant les mots français
 def lire_mots():
@@ -47,9 +48,8 @@ def choisir_suivant(dictionnaire):
 
 # Faire un input pour choisir la longueur minimale et maximale des mots
 longueur_min = int(input("Longueur minimale des mots: "))
-longueur_max = int(input("Longueur maximale des mots: "))
 
-def generer_mot_plausible(tableau_occurence, longueur_min, longueur_max):
+def generer_mot_plausible(tableau_occurence, longueur_min, longueur_max = 100):
     mot = '#'
     while True:
         prefix = mot[-4:] if len(mot) > 4 else mot
@@ -70,9 +70,13 @@ def generer_mot_plausible(tableau_occurence, longueur_min, longueur_max):
 
 # Génération des mots
 nombre_mots = int(input("Nombre de mots à générer: "))
-mots_generes = [generer_mot_plausible(tableau_occurence, longueur_min, longueur_max) for _ in range(nombre_mots)]
+mots_generes = [generer_mot_plausible(tableau_occurence, longueur_min) for _ in range(nombre_mots)]
 
 # Écrire les mots dans un fichier
 with open('mots_generes.txt', 'w', encoding='utf-8') as fichier:
     for mot in mots_generes:
         fichier.write(mot + '\n')
+print("Mots générés avec succès!")
+
+#Ouvrir le fichier contenant les mots générés
+os.startfile("mots_generes.txt")
