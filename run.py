@@ -8,13 +8,15 @@ def lire_mots():
         mots = file.read().split()
     return mots
 
+n = int(input("Profondeur mots à afficher: "))
+
 #Tableau d'occurence pour les lettres (jusqu'a 3 occurences)
 def creer_tableau_occurence(mots):
     tableau_occurence = {}
     for mot in mots:
         mot_traité = "#" + mot + "$"  # Ajoute un symbole de début et de fin de mot
         for i in range(len(mot_traité)):
-            for j in range(1, 5):  # On prend en compte maintenant jusqu'à 4 caractères pour le préfixe
+            for j in range(1, n):  # On prend en compte maintenant jusqu'à 4 caractères pour le préfixe
                 if i-j < 0:
                     break
                 prefix = mot_traité[i-j:i]
@@ -29,7 +31,7 @@ def creer_tableau_occurence(mots):
 
 mots = lire_mots()
 tableau_occurence = creer_tableau_occurence(mots)
-
+print("Statisiques occurences en cours de génération...")
 # Convertir le tableau d'occurrence en JSON
 json_statistiques = json.dumps(tableau_occurence, ensure_ascii=False, indent=4)
 with open('statistiques.json', 'w', encoding='utf-8') as f:
