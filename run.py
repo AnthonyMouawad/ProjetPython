@@ -1,3 +1,4 @@
+import json
 import random
 
 #Ouverture du fichier texte contenant les mots français
@@ -29,7 +30,6 @@ mots = lire_mots()
 tableau_occurence = creer_tableau_occurence(mots)
 
 # Convertir le tableau d'occurrence en JSON
-import json
 json_statistiques = json.dumps(tableau_occurence, ensure_ascii=False, indent=4)
 with open('statistiques.json', 'w', encoding='utf-8') as f:
     f.write(json_statistiques)
@@ -45,7 +45,10 @@ def choisir_suivant(dictionnaire):
             return lettre
     return ' '  # Retourne un espace si rien n'est trouvé
 
-def generer_mot_plausible(tableau_occurence, longueur_min=4, longueur_max=8):
+# Faire un input pour choisir la longueur minimale et maximale des mots
+
+
+def generer_mot_plausible(tableau_occurence, longueur_min=4, longueur_max=10):
     mot = '#'
     while True:
         prefix = mot[-4:] if len(mot) > 4 else mot
@@ -65,7 +68,7 @@ def generer_mot_plausible(tableau_occurence, longueur_min=4, longueur_max=8):
 
 
 # Génération des mots
-nombre_mots = 100  # Nombre de mots à générer
+nombre_mots = 500  # Nombre de mots à générer
 mots_generes = [generer_mot_plausible(tableau_occurence) for _ in range(nombre_mots)]
 
 # Écrire les mots dans un fichier
