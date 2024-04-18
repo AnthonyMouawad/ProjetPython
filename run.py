@@ -46,9 +46,10 @@ def choisir_suivant(dictionnaire):
     return ' '  # Retourne un espace si rien n'est trouvé
 
 # Faire un input pour choisir la longueur minimale et maximale des mots
+longueur_min = int(input("Longueur minimale des mots: "))
+longueur_max = int(input("Longueur maximale des mots: "))
 
-
-def generer_mot_plausible(tableau_occurence, longueur_min=4, longueur_max=10):
+def generer_mot_plausible(tableau_occurence, longueur_min, longueur_max):
     mot = '#'
     while True:
         prefix = mot[-4:] if len(mot) > 4 else mot
@@ -68,8 +69,8 @@ def generer_mot_plausible(tableau_occurence, longueur_min=4, longueur_max=10):
 
 
 # Génération des mots
-nombre_mots = 500  # Nombre de mots à générer
-mots_generes = [generer_mot_plausible(tableau_occurence) for _ in range(nombre_mots)]
+nombre_mots = int(input("Nombre de mots à générer: "))
+mots_generes = [generer_mot_plausible(tableau_occurence, longueur_min, longueur_max) for _ in range(nombre_mots)]
 
 # Écrire les mots dans un fichier
 with open('mots_generes.txt', 'w', encoding='utf-8') as fichier:
